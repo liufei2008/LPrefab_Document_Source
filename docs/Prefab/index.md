@@ -70,7 +70,7 @@ Select the root actor of your Prefab instance in Level-Editor, then right click 
 
 **NOTE!!! The "Destroy Actors" can destroy selected actors with it's attached children actors.**  
 
-## Load Prefab at runtime
+## Use Prefab at runtime
 LPrefab provide a some function to load it at runtime, you can easily call it in Blueprint and c++:
 ![](./RuntimeUse_1.png)
 **LoadPrefab**: Most commonly used function
@@ -102,6 +102,23 @@ Now hit play and you will see printed info right after the Prefab is loaded.
 ### Delete Prefab instance at runtime
 Prefab instance is just a collection of actors, so all we need to do is delete these actors. LPrefab provide a simple function to do it "Destroy Actor with Hierarchy", just use it with the loaded prefab's root actor:
 ![](./RuntimeUse_7.png)
+
+### Get Actors or Components inside Prefab after load it
+Unlike Blueprint, Blueprint is script-class but Prefab is a collection of asset. In Prefab workflow, you need a script to get references to the Objects inside Prefab (Actors or Components or other type of UObjects).  
+For example, we have a Torch Prefab, and we want to get the PointLight actor:  
+![](./RuntimeUse_8.png)
+Create a ActorComponent, and name it "MediatorComponent", click to open it in BlueprintEditor:  
+![](./RuntimeUse_9.png)
+Add a variable with name "PointLight" and type "PointLight" Actor, check on InstanceEditable:  
+![](./RuntimeUse_10.png)
+Drag MediatorComponent to the root Actor of Torch Prefab, then assign the PointLight Actor to the MedatorComponent's PointLight variable:  
+![](./RuntimeUse_11.png)
+Now we can load the Prefab. Create another ActorComponent and name it "LoadPrefabComponent", click to open it in BlueprintEditor, and use LoadPrefab node at BeginPlay:  
+![](./RuntimeUse_12.png)
+At the ReturnValue of LoadPrefab, we can get the root Actor which is the Torch Actor with component MediatorComponent, so we can get the PointLight through the MediatorComponent:  
+![](./RuntimeUse_13.png) 
+Now we get the PointLight, we can do whatever we want with it.  
+The MediatorComponent is act as a "mediator", we can use it to get parameters inside Prefab.  
 
 ## Nested Prefab and Property Override
 Nested Prefab means you can include Prefab instances inside other Prefabs. Nested Prefabs retain their links to their own Prefab Assets, while also forming part of another Prefab Asset.  
